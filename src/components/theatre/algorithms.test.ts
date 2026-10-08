@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { shuffled, quicksort, mergesort, search, COLS } from "./algorithms.ts";
 
 const last = <T,>(g: Generator<T>) => { let v: T | undefined; for (const x of g) v = x; return v!; };
-const sorted = (a: number[]) => a.every((v, i) => i === 0 || a[i - 1] <= v);
 
 test("quicksort and mergesort end sorted and keep the same values", () => {
   for (let t = 0; t < 20; t++) {

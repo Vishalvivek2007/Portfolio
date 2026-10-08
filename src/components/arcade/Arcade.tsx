@@ -120,7 +120,7 @@ export default function Arcade() {
           className="block"
           style={{ cursor: open ? "default" : "pointer" }}
         >
-          <canvas ref={canvas} width={COLS * CELL} height={ROWS * CELL} style={{ width: open ? 288 : 144, height: open ? 216 : 108, imageRendering: "pixelated", display: "block", touchAction: "none" }} />
+          <canvas className={open ? "" : "max-sm:hidden"} ref={canvas} width={COLS * CELL} height={ROWS * CELL} style={{ width: open ? 288 : 144, height: open ? 216 : 108, imageRendering: "pixelated", display: "block", touchAction: "none" }} />
         </button>
         {open && (
           <div className="machine mt-2 w-[288px]">
@@ -130,7 +130,7 @@ export default function Arcade() {
             <button className="inv px-1 mt-1" onClick={() => setOpen(false)}>dock</button>
           </div>
         )}
-        {!open && <p className="machine text-center mt-1">Play</p>}
+        {!open && <button className="machine block w-full text-center mt-1 max-sm:mt-0 max-sm:px-2 max-sm:py-1" onClick={() => { setOpen(true); reset(true); }}>Play</button>}
       </div>
     </div>
   );

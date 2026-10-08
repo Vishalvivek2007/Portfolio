@@ -95,3 +95,11 @@ html[data-boot="run"] body { clip-path: inset(49.9% 0); }
 html[data-boot="run"] [data-late] { opacity: 0; }
 html[data-boot="late1"] [data-late] { opacity: 0.33; }
 html[data-boot="late2"] [data-late] { opacity: 0.66; }
+
+/* clean mode: slots show their poster */
+html.res-clean [data-slot] { background-size: contain; background-position: center; background-repeat: no-repeat; }
+html.res-clean [data-slot="portrait"] { background-image: url(/posters/portrait.webp); }
+html.res-clean [data-slot="receiver"] { background-image: url(/posters/receiver.webp); }
+html.res-clean [data-slot="figure"] { background-image: url(/posters/figure.webp); }
+html.res-clean [data-slot="orrery"] { background-image: url(/posters/orrery.webp); }
+html.res-clean [data-slot="strata"] { background-image: url(/posters/strata.webp); }

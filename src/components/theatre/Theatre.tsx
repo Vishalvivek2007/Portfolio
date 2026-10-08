@@ -38,7 +38,7 @@ export default function Theatre() {
     ctx.fillStyle = col; ctx.strokeStyle = col;
     const dot = (x: number, y: number, r: number, fill = true) => {
       ctx.beginPath(); ctx.arc(x * CELL + CELL / 2, y * CELL + CELL / 2, r, 0, 7);
-      fill ? ctx.fill() : ctx.stroke();
+      if (fill) ctx.fill(); else ctx.stroke();
     };
     if (kind === "quicksort" || kind === "mergesort") {
       const arr = (f as SortFrame | null)?.arr ?? s.arr, hi = new Set((f as SortFrame | null)?.hi ?? []);
@@ -122,7 +122,7 @@ export default function Theatre() {
           ref={canvas} width={COLS * CELL} height={ROWS * CELL} className="block w-full touch-none" style={{ imageRendering: "pixelated" }}
           role="img" aria-label={LABEL[kind] + " running on a dot matrix"}
           onPointerDown={(e) => { S.current.painting = true; (e.target as Element).setPointerCapture(e.pointerId); paint(e); }}
-          onPointerMove={(e) => S.current.painting && paint(e)}
+          onPointerMove={(e) => { if (S.current.painting) paint(e); }}
           onPointerUp={() => (S.current.painting = false)}
           onContextMenu={(e) => e.preventDefault()}
         />
