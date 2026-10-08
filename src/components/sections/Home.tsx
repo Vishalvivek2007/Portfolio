@@ -7,7 +7,7 @@ export default function Home() {
     <section id="home" className="relative min-h-[100dvh] px-[var(--pad)] pt-24 pb-10 flex flex-col">
       <div className="flex-1 flex justify-center items-center">
         <Slot id="portrait" label="Halftone portrait of Vishal, drawn live" className="h-[50dvh] lg:h-[56dvh] aspect-[4/5]">
-          <p className="machine absolute left-full ml-4 bottom-0 hidden lg:block whitespace-nowrap">drag to tilt,<br />click to rescan</p>
+          <p className="machine absolute left-full ml-4 bottom-0 hidden lg:block whitespace-nowrap">mode <span id="readout-portrait">halftone</span><br />drag to tilt,<br />click to rescan</p>
         </Slot>
       </div>
       <h1 className="h-name glow relative -mt-[0.5em] flex justify-between w-full" style={{ mixBlendMode: "difference" }}>

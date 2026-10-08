@@ -34,6 +34,7 @@ export function goTo(i: number) {
 export default function Shell() {
   const { res, phosphor, channel, set } = useStore();
   const [fine, setFine] = useState(false);
+  const [moved, setMoved] = useState(false);
   const [osd, setOsd] = useState<number | null>(null);
   const [burst, setBurst] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -54,6 +55,7 @@ export default function Shell() {
   useEffect(() => {
     reduced.current = matchMedia("(prefers-reduced-motion: reduce)").matches;
     setFine(matchMedia("(hover: hover) and (pointer: fine)").matches);
+    addEventListener("pointermove", () => setMoved(true), { once: true });
     const q = new URLSearchParams(location.search);
     const r = q.get("res") as Res | null;
     if (r && RES_ORDER.includes(r)) set({ res: r });
@@ -146,7 +148,7 @@ export default function Shell() {
   return (
     <>
       {!clean && <Stage />}
-      {!clean && fine && (
+      {!clean && fine && moved && (
         <div className="fixed inset-0" style={{ zIndex: 20, mixBlendMode: "difference", pointerEvents: "none" }}>
           <HalftoneTrail color="var(--phosphor)" cellSize={cell} decay={0.965} brushSize={0.045} hoverBrushSize={0.012} hoverOpacity={0.15} speedScale={38} />
         </div>

@@ -78,7 +78,7 @@ function SlotGroup({ id, el, tier, lofi }: { id: SlotId; el: HTMLElement; tier: 
     group.userData.place = () => {
       const r = el.getBoundingClientRect();
       const vh = innerHeight, vw = innerWidth;
-      const visible = r.bottom > -vh * 0.2 && r.top < vh * 1.2 && r.width > 0;
+      const visible = r.bottom > -vh * 0.2 && r.top < vh * 1.2 && r.width > 0 && r.height > 0;
       group.visible = visible;
       if (!visible) return;
       const s = Math.min(r.width, r.height);

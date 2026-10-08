@@ -6,6 +6,7 @@ export default function Experience() {
     <section id="experience" className="section">
       <h2 className="h2 mb-10">Experience</h2>
       <Slot id="strata" label="Scanline terrain, drawn live" className="w-full aspect-[21/9] mb-12" />
+      <p className="machine -mt-8 mb-10" id="readout-strata">seed 0x{"0000"}, click to change entry</p>
       <ol className="border-t border-[var(--rule)]">
         {content.experience.map((e, i) => (
           <li key={i} className={"grid grid-cols-12 gap-6 py-6 border-b border-[var(--rule)] " + (e.upcoming ? "text-[var(--dim)] border-dashed" : "")}>

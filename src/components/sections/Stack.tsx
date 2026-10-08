@@ -34,7 +34,7 @@ export default function Stack() {
         </div>
         <div className="col-span-12 lg:col-span-5">
           <Slot id="orrery" label="Orrery of skills in ordered dither, drawn live" className="aspect-square w-full" />
-          <p className="machine mt-3">drag to turn, click to re-seed</p>
+          <p className="machine mt-3">seed <span id="readout-orrery">04211</span>, drag to turn, click to re-seed</p>
         </div>
       </div>
       <p className="mt-16 max-w-[50ch]">{content.education}</p>

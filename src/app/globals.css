@@ -41,6 +41,7 @@ body {
 ::selection { background: var(--phosphor); color: var(--void); }
 :focus-visible { outline: 1px solid var(--phosphor); outline-offset: 3px; }
 a, button { cursor: pointer; }
+@layer components {
 .inv:hover, .inv:focus-visible { background: var(--phosphor); color: var(--void); }
 
 .machine { font-family: var(--font-geist-pixel-square), monospace; font-size: 0.8125rem; line-height: 1.4; letter-spacing: 0.02em; color: var(--dim); }
@@ -62,6 +63,7 @@ a, button { cursor: pointer; }
 .slot > .br::before { bottom: -1px; left: -1px; border-width: 0 0 1px 1px; }
 .slot > .br::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
 .slot { cursor: crosshair; }
+}
 
 /* screen overlay */
 .screen-overlay { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
