@@ -2,6 +2,7 @@
 import { content } from "@/content";
 import Slot from "@/components/Slot";
 import { useStore } from "@/lib/store";
+import Theatre from "@/components/theatre/Theatre";
 
 export default function Stack() {
   const set = useStore((s) => s.set);
@@ -38,6 +39,7 @@ export default function Stack() {
         </div>
       </div>
       <p className="mt-16 max-w-[50ch]">{content.education}</p>
+      <Theatre />
     </section>
   );
 }

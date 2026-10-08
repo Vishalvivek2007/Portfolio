@@ -10,7 +10,7 @@ p.on("console", (m) => { if (["error", "warning"].includes(m.type())) logs.push(
 p.on("pageerror", (e) => logs.push("pageerror: " + e.message.slice(0, 300)));
 await p.goto("http://localhost:3100/" + suffix, { waitUntil: "load" });
 await p.waitForTimeout(2500);
-if (where.startsWith("#")) await p.evaluate((id) => document.querySelector(id).scrollIntoView(), where);
+if (where.startsWith("#")) await p.evaluate((id) => { const [sel, off] = id.split("+"); document.querySelector(sel).scrollIntoView(); scrollBy(0, +(off || 0)); }, where);
 else await p.evaluate((y) => scrollTo(0, +y), where);
 await p.waitForTimeout(2500);
 await p.screenshot({ path: `shots/${name}.png` });
