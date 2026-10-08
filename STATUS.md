@@ -1,6 +1,6 @@
 # Status, 2026-10-09 (end of first overnight session)
 
-The site is built and runs. Project folder: `C:\dev\portfolio_website` (moved out of OneDrive; its own git repo, branch `master`, 6 local commits, nothing pushed or deployed).
+The site is built and runs. Project folder: `C:\dev\portfolio_website` (moved out of OneDrive; its own git repo, branch `main`, 6 local commits, nothing pushed or deployed).
 
 ## Run it
 
@@ -46,7 +46,7 @@ URL params: `?boot=skip`, `?res=lofi|broadcast|clean`, `?tier=1|2|3`, `?phosphor
 - Moved the project from OneDrive to `C:\dev\portfolio_website` (copy; the originals in the OneDrive folder are untouched except a MOVED.txt pointer). Its git repo is separate from the one in your home folder.
 - Used `image copy.png` (full body) for both the portrait and the figure, because its face is the sharper source. `image.png` is kept in `assets-src/` (git-ignored) unused.
 - Removed `cacheComponents` / `partialPrefetching` from the Next config template (not needed, and they break `Math.random` in client code).
-- Disabled three React-compiler lint rules for the stage / arcade / theatre / shell folders (they flag normal three.js uniform updates) and excluded the pasted trail component from lint so it stays byte-for-byte as pasted, apart from nothing.
+- Disabled three React-compiler lint rules for the stage / arcade / theatre / shell folders (they flag normal three.js uniform updates) and excluded the pasted trail component from lint so it stays exactly as pasted.
 - "Shader lines": built the monochrome Shader Lines idea behind Contact (your second paste was the trail again).
 - Pinned Work/Experience sections skipped to keep the visual result verified; everything shipped was screenshot-checked.
 
