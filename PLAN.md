@@ -1,6 +1,6 @@
 # RASTER: build plan for Vishal Vivek's portfolio
 
-> Build status: see STATUS.md. The code lives in C:devportfolio_website. Deviations from this plan are listed there.
+> Build status: see STATUS.md. The code lives in C:\dev\portfolio_website. Deviations from this plan are listed there.
 
 Plan version 1, written 2026-10-09. This file is the single source of truth for the build.
 If something here is wrong or impossible, fix this file first, then the code.
