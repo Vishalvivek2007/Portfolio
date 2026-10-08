@@ -1,5 +1,6 @@
 import { content } from "@/content";
 import Slot from "@/components/Slot";
+import ScrubText from "@/components/ScrubText";
 
 export default function About() {
   return (
@@ -14,7 +15,7 @@ export default function About() {
           <h2 className="h2 mb-10">About</h2>
           <div className="grid gap-8 max-w-[38ch]">
             {content.about.map((t, i) => (
-              <p key={i} className="lead">{t}</p>
+              <ScrubText key={i} text={t} className="lead" />
             ))}
           </div>
           <dl className="mt-14 grid grid-cols-2 gap-x-6 gap-y-6 max-w-xl">

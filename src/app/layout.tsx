@@ -6,6 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Vishal Vivek, full-stack and ML engineer",
   description: "Third-year CS student at VIT Vellore building full-stack and machine-learning products people actually use.",
+  openGraph: { title: "Vishal Vivek, full-stack and ML engineer", description: "Full-stack and machine-learning products people actually use.", type: "website" },
 };
 
 const BOOT_JS = "try{var d=document.documentElement,q=new URLSearchParams(location.search).get(\"boot\"),r=matchMedia(\"(prefers-reduced-motion: reduce)\").matches,s=sessionStorage.getItem(\"raster-booted\");d.dataset.boot=(q===\"skip\"||r)?\"skip\":(s?\"short\":\"run\")}catch(e){document.documentElement.dataset.boot=\"skip\"}";
