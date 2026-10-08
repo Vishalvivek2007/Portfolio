@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { useStore, type Res } from "@/lib/store";
 import HalftoneTrail from "@/components/ui/halftone-trail";
+import Arcade from "@/components/arcade/Arcade";
+import Boot from "./Boot";
 
 const Stage = dynamic(() => import("@/stage/Stage"), { ssr: false });
 
@@ -147,7 +149,9 @@ export default function Shell() {
 
   return (
     <>
+      <Boot />
       {!clean && <Stage />}
+      {!clean && <Arcade />}
       {!clean && fine && moved && (
         <div className="fixed inset-0" style={{ zIndex: 20, mixBlendMode: "difference", pointerEvents: "none" }}>
           <HalftoneTrail color="var(--phosphor)" cellSize={cell} decay={0.965} brushSize={0.045} hoverBrushSize={0.012} hoverOpacity={0.15} speedScale={38} />
@@ -192,7 +196,7 @@ export default function Shell() {
 
       {help && (
         <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black border border-[var(--rule)] p-6 machine" role="dialog" aria-label="Keyboard shortcuts">
-          <p>1 to 6 go to a section</p><p>[ and ] turn the resolution dial</p><p>g opens the game</p><p>? closes this</p>
+          <p>1 to 6 go to a section</p><p>[ and ] turn the resolution dial</p><p>g opens the game (arrows or WASD, Escape to dock)</p><p>? closes this</p>
         </div>
       )}
 

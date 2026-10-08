@@ -2,7 +2,15 @@
 import { useState } from "react";
 import { content } from "@/content";
 import Slot from "@/components/Slot";
-import { goTo } from "@/components/shell/Shell";
+
+function power() {
+  const body = document.body;
+  const done = () => { try { sessionStorage.removeItem("raster-booted"); } catch { /* ignore */ } history.scrollRestoration = "manual"; scrollTo(0, 0); location.href = location.pathname; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return done();
+  [0, 12, 24, 36, 45, 49.9].forEach((v, i) => setTimeout(() => { body.style.clipPath = "inset(" + v + "% 0)"; }, i * 40));
+  setTimeout(() => { body.style.clipPath = "inset(49.9% 49.9%)"; }, 280);
+  setTimeout(done, 1100);
+}
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
@@ -35,7 +43,7 @@ export default function Contact() {
       </div>
       <footer className="relative mt-20 flex flex-wrap justify-between gap-4 machine">
         <p>Vellore, India</p>
-        <button className="inv px-2" onClick={() => goTo(1)}>Power</button>
+        <button className="inv px-2" onClick={power}>Power</button>
         <p>Built by hand with three.js and GLSL.</p>
       </footer>
     </section>

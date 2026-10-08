@@ -128,7 +128,7 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
   // boot: coarse blocks resolve to fine cells, then blocks become the real mode and the relief inflates
   useEffect(() => {
     const u = material.uniforms;
-    const skipBoot = new URLSearchParams(location.search).get("boot") === "skip" || id === "figure";
+    const skipBoot = document.documentElement.dataset.boot !== "run" || id === "figure";
     if (skipBoot) { u.uBlock.value = 1; u.uMorph.value = 1; u.uInflate.value = 1; return; }
     const tl = gsap.timeline({ delay: 0.15 });
     [32, 16, 8, 4, 2, 1].forEach((b, i) => tl.set(u.uBlock, { value: b }, i * 0.2));

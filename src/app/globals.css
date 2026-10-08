@@ -23,6 +23,9 @@ html.res-clean .screen-overlay { display: none; }
   --font-human: var(--font-geist-sans), system-ui, sans-serif;
   --font-machine: var(--font-geist-pixel-square), monospace;
   --font-dot: var(--font-geist-pixel-circle), monospace;
+  --font-p-line: var(--font-geist-pixel-line), monospace;
+  --font-p-tri: var(--font-geist-pixel-triangle), monospace;
+  --font-p-grid: var(--font-geist-pixel-grid), monospace;
   --color-phosphor: var(--phosphor);
   --color-dim: var(--dim);
   --color-faint: var(--faint);
@@ -86,3 +89,9 @@ a, button { cursor: pointer; }
 @media (max-width: 640px) { .screen-overlay .frame { display: none; } }
 @media (prefers-reduced-motion: reduce) { .screen-overlay .grain { animation: none; } }
 html.res-clean .grain { animation: none; }
+
+/* boot */
+html[data-boot="run"] body { clip-path: inset(49.9% 0); }
+html[data-boot="run"] [data-late] { opacity: 0; }
+html[data-boot="late1"] [data-late] { opacity: 0.33; }
+html[data-boot="late2"] [data-late] { opacity: 0.66; }
