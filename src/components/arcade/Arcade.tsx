@@ -9,6 +9,7 @@ const KEYS: Record<string, Dir> = { ArrowUp: "U", ArrowDown: "D", ArrowLeft: "L"
 export default function Arcade() {
   const booted = useStore((s) => s.booted);
   const set = useStore((s) => s.set);
+  const onHero = useStore((s) => s.channel === 1);
   const [open, setOpen] = useState(false);
   const [ops, setOps] = useState<string[]>([]);
   const [info, setInfo] = useState("");
@@ -109,7 +110,7 @@ export default function Arcade() {
 
   if (!booted) return null;
   return (
-    <div ref={root} data-game className="fixed z-40 right-4 bottom-4" onBlur={(e) => { if (!root.current?.contains(e.relatedTarget as Node)) game.current.paused = open; }} onFocus={() => (game.current.paused = false)}>
+    <div ref={root} data-game className="fixed z-40 right-4 bottom-4" style={{ mixBlendMode: onHero && !open ? "screen" : undefined }} onBlur={(e) => { if (!root.current?.contains(e.relatedTarget as Node)) game.current.paused = open; }} onFocus={() => (game.current.paused = false)}>
       <div className={"bg-black border border-[var(--rule)] " + (open ? "p-3" : "p-1")}>
         <button
           data-game-focus
@@ -120,7 +121,7 @@ export default function Arcade() {
           className="block"
           style={{ cursor: open ? "default" : "pointer" }}
         >
-          <canvas className={open ? "" : "max-sm:hidden"} ref={canvas} width={COLS * CELL} height={ROWS * CELL} style={{ width: open ? 288 : 144, height: open ? 216 : 108, imageRendering: "pixelated", display: "block", touchAction: "none" }} />
+          <canvas className={open ? "block" : "block max-sm:hidden"} ref={canvas} width={COLS * CELL} height={ROWS * CELL} style={{ width: open ? 288 : 144, height: open ? 216 : 108, imageRendering: "pixelated", touchAction: "none" }} />
         </button>
         {open && (
           <div className="machine mt-2 w-[288px]">

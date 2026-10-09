@@ -4,7 +4,7 @@ const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
 const logs = [];
 p.on("console", (m) => { if (m.type() === "error") logs.push(m.text().slice(0, 200)); });
 p.on("pageerror", (e) => logs.push(e.message.slice(0, 200)));
-await p.goto("http://localhost:3100/?boot=skip");
+await p.goto("http://localhost:" + (process.env.PORT || 3100) + "/?boot=skip");
 await p.waitForTimeout(2500);
 // 1. click portrait -> rescan to ascii, hold mid-scan
 const r = await p.locator("#slot-portrait").boundingBox();

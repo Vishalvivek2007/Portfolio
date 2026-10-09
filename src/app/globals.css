@@ -32,7 +32,8 @@ html.res-clean .screen-overlay { display: none; }
   --color-rule: var(--rule);
 }
 
-html { background: var(--void); scroll-behavior: auto; }
+html { background: var(--void); scroll-behavior: auto; scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
 body {
   background: var(--void);
   color: var(--phosphor);
@@ -40,12 +41,15 @@ body {
   font-size: 1.0625rem;
   line-height: 1.55;
   overflow-x: clip;
+  user-select: none;
+  -webkit-user-select: none;
 }
 ::selection { background: var(--phosphor); color: var(--void); }
 :focus-visible { outline: 1px solid var(--phosphor); outline-offset: 3px; }
 a, button { cursor: pointer; }
 @layer components {
 .inv:hover, .inv:focus-visible { background: var(--phosphor); color: var(--void); }
+.btn { padding: 0.25rem 0.75rem; border: 1px solid var(--rule); }
 
 .machine { font-family: var(--font-geist-pixel-square), monospace; font-size: 0.8125rem; line-height: 1.4; letter-spacing: 0.02em; color: var(--dim); }
 .glow { text-shadow: 0 0 0.6em color-mix(in oklab, var(--phosphor) 35%, transparent); }
@@ -90,6 +94,12 @@ a, button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .screen-overlay .grain { animation: none; } }
 html.res-clean .grain { animation: none; }
 
+/* scroll progress: a column of cells on the left edge that fill as the page scrolls */
+.progress { position: fixed; z-index: 30; left: calc(var(--pad) * 0.25 + 4px); top: 50%; transform: translateY(-50%); display: grid; gap: 3px; }
+.progress button { display: block; width: 6px; height: 6px; background: var(--faint); }
+.progress button[data-on] { background: var(--phosphor); }
+.progress button:hover { background: var(--dim); }
+
 /* boot */
 html[data-boot="run"] body { clip-path: inset(49.9% 0); }
 html[data-boot="run"] [data-late] { opacity: 0; }
@@ -102,4 +112,6 @@ html.res-clean [data-slot="portrait"] { background-image: url(/posters/portrait.
 html.res-clean [data-slot="receiver"] { background-image: url(/posters/receiver.webp); }
 html.res-clean [data-slot="figure"] { background-image: url(/posters/figure.webp); }
 html.res-clean [data-slot="orrery"] { background-image: url(/posters/orrery.webp); }
-html.res-clean [data-slot="strata"] { background-image: url(/posters/strata.webp); }
+html.res-clean [data-slot="logo0"] { background-image: url(/logos/microsoft.png); background-size: 40%; }
+html.res-clean [data-slot="logo1"] { background-image: url(/logos/deepterrain.png); background-size: 70%; }
+html.res-clean [data-slot="logo2"] { background-image: url(/logos/innova.png); background-size: 70%; }

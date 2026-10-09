@@ -7,7 +7,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Imperative three.js / canvas code mutates uniforms and refs by design; the trail component is pasted verbatim.
   {
-    files: ["src/stage/**", "src/components/arcade/**", "src/components/theatre/**", "src/components/shell/**"],
+    files: ["src/stage/**", "src/components/arcade/**", "src/components/lab/**", "src/components/shell/**"],
     rules: { "react-hooks/immutability": "off", "react-hooks/refs": "off", "react-hooks/set-state-in-effect": "off" },
   },
   // Override default ignores of eslint-config-next.

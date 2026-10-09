@@ -17,10 +17,12 @@ const SECTIONS = [
   ["work", "Work"],
   ["about", "About"],
   ["stack", "Stack"],
+  ["lab", "Lab"],
   ["experience", "Experience"],
   ["contact", "Contact"],
 ] as const;
 
+const PROGRESS_CELLS = 28;
 const RES_ORDER: Res[] = ["lofi", "broadcast", "clean"];
 const RES_LABEL: Record<Res, string> = { lofi: "1-bit", broadcast: "Broadcast", clean: "Clean" };
 
@@ -41,6 +43,7 @@ export default function Shell() {
   const [burst, setBurst] = useState(false);
   const [menu, setMenu] = useState(false);
   const [help, setHelp] = useState(false);
+  const [cells, setCells] = useState(0); // lit scroll-progress cells
   const lastBurst = useRef(0);
   const reduced = useRef(false);
 
@@ -73,6 +76,7 @@ export default function Shell() {
     const lenis = new Lenis({ lerp: 0.1 });
     lenisRef = lenis;
     lenis.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", (l: Lenis) => setCells(Math.round(l.progress * (PROGRESS_CELLS - 1))));
     const tick = (t: number) => lenis.raf(t * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
@@ -121,7 +125,7 @@ export default function Shell() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (t.closest("input, textarea, select, [data-game]") || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (/^[1-6]$/.test(e.key)) goTo(+e.key);
+      if (/^[1-7]$/.test(e.key)) goTo(+e.key);
       else if (e.key === "[" || e.key === "]") {
         const i = RES_ORDER.indexOf(useStore.getState().res) + (e.key === "]" ? 1 : -1);
         set({ res: RES_ORDER[Math.max(0, Math.min(2, i))] });
@@ -154,7 +158,7 @@ export default function Shell() {
       {!clean && <Arcade />}
       {!clean && fine && moved && (
         <div className="fixed inset-0" style={{ zIndex: 20, mixBlendMode: "difference", pointerEvents: "none" }}>
-          <HalftoneTrail color="var(--phosphor)" cellSize={cell} decay={0.965} brushSize={0.045} hoverBrushSize={0.012} hoverOpacity={0.15} speedScale={38} />
+          <HalftoneTrail color="var(--phosphor)" cellSize={cell} decay={0.965} brushSize={0.02} hoverBrushSize={0.007} hoverOpacity={0.15} speedScale={38} />
         </div>
       )}
 
@@ -174,6 +178,13 @@ export default function Shell() {
           <button className="lg:hidden inv px-2 py-0.5" onClick={() => setMenu(true)} aria-expanded={menu}>Menu</button>
         </div>
       </header>
+
+      <div className="progress" role="group" aria-label="Scroll progress">
+        {Array.from({ length: PROGRESS_CELLS }, (_, i) => (
+          <button key={i} tabIndex={-1} aria-label={"Scroll to " + Math.round((i / (PROGRESS_CELLS - 1)) * 100) + "%"} data-on={i <= cells || undefined}
+            onClick={() => lenisRef?.scrollTo((i / (PROGRESS_CELLS - 1)) * lenisRef.limit)} />
+        ))}
+      </div>
 
       {menu && (
         <div className="fixed inset-0 z-50 bg-black p-[var(--pad)] flex flex-col justify-center gap-4" role="dialog" aria-label="Menu">
@@ -196,7 +207,7 @@ export default function Shell() {
 
       {help && (
         <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black border border-[var(--rule)] p-6 machine" role="dialog" aria-label="Keyboard shortcuts">
-          <p>1 to 6 go to a section</p><p>[ and ] turn the resolution dial</p><p>g opens the game (arrows or WASD, Escape to dock)</p><p>? closes this</p>
+          <p>1 to 7 go to a section</p><p>[ and ] turn the resolution dial</p><p>g opens the game (arrows or WASD, Escape to dock)</p><p>? closes this</p>
         </div>
       )}
 

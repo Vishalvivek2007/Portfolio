@@ -5,6 +5,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { GLSL_SCREENS, shared, type SlotCtx } from "../shared";
 import type { SlotId } from "../slots";
+import { useStore } from "@/lib/store";
 
 const VERT = /* glsl */ `
 uniform sampler2D uTex;
@@ -17,6 +18,9 @@ uniform vec2 uPointer;
 uniform float uPress;
 uniform float uDissolve;
 uniform float uSkip;     // lo-fi: draw every second cell
+uniform vec2 uShear;     // slot offset from screen centre / camera distance
+uniform float uCam;      // 1 = uTex is a live camera frame
+uniform vec2 uCamFit;    // crops the camera frame to the slot
 attribute vec2 aCell;
 varying vec2 vCell;
 varying vec3 vTex;
@@ -27,6 +31,11 @@ void main() {
   vec2 q = floor(cell / uBlock) * uBlock + 0.5 * uBlock;
   vec2 uv = clamp(q / uGrid, 0.0, 1.0);
   vec3 t = texture2D(uTex, uv).rgb;
+  if (uCam > 0.5) { // mirrored camera: brightness doubles as depth, everything is in the matte
+    vec3 c = texture2D(uTex, (vec2(1.0 - uv.x, uv.y) - 0.5) * uCamFit + 0.5).rgb;
+    float l = smoothstep(0.04, 0.9, dot(c, vec3(0.299, 0.587, 0.114)));
+    t = vec3(l, 0.35 + l * 0.45, 1.0);
+  }
   vTex = t;
   vec2 p = (aCell + 0.5) / uGrid;
   vec2 pos = vec2(mix(-uHalf.x, uHalf.x, p.x), mix(-uHalf.y, uHalf.y, p.y));
@@ -40,6 +49,7 @@ void main() {
   if (uSkip > 0.5 && (mod(aCell.x, 2.0) > 0.5 || mod(aCell.y, 2.0) > 0.5)) visible = 0.0;
   vCell = aCell;
   vLum = t.r;
+  pos -= z * uShear; // cancel the sideways parallax a slot away from screen centre would get, so the relief reads head-on
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, z, 1.0);
   gl_PointSize = size * visible * (1.0 - step(0.5, uDissolve) * (1.0 - gone));
   if (visible < 0.5) gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
@@ -89,7 +99,7 @@ void main() {
 
 const MODES = ["halftone", "ascii", "line", "block"];
 const SRC: Record<string, { url: string; grid: [number, number]; mode: number }> = {
-  portrait: { url: "/relief/portrait.png", grid: [160, 200], mode: 0 },
+  portrait: { url: "/relief/portrait.png", grid: [200, 250], mode: 0 },
   figure: { url: "/relief/figure.png", grid: [96, 250], mode: 2 },
 };
 
@@ -98,6 +108,7 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
   const gridScale = ctx.tier === 3 ? 1 : ctx.tier === 2 ? 0.75 : 0.5;
   const grid: [number, number] = [Math.round(cfg.grid[0] * gridScale), Math.round(cfg.grid[1] * gridScale)];
   const group = useRef<THREE.Group>(null);
+  const fit = id === "figure" ? 0.94 : 1; // the figure's near parts are drawn larger by perspective; this keeps the feet inside the brackets
   const state = useRef({ press: 0, tx: 0, ty: 0, scanning: false, mode: cfg.mode, clicks: 0 });
 
   const { geometry, material } = useMemo(() => {
@@ -117,6 +128,7 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
         uTex: { value: tex }, uGrid: { value: new THREE.Vector2(...grid) }, uHalf: { value: new THREE.Vector2(0.5, 0.5) },
         uBlock: { value: 32 }, uInflate: { value: 0 }, uCell: { value: 4 }, uPointer: { value: new THREE.Vector2(9, 9) },
         uPress: { value: 0 }, uDissolve: { value: 0 }, uSkip: { value: 0 },
+        uShear: { value: new THREE.Vector2() }, uCam: { value: 0 }, uCamFit: { value: new THREE.Vector2(1, 1) },
         uModeA: { value: cfg.mode }, uModeB: { value: cfg.mode }, uScan: { value: -1 }, uMorph: { value: 0 }, uGridY: { value: grid[1] },
         uPhosphor: shared.uPhosphor,
       },
@@ -137,13 +149,39 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
     return () => { tl.kill(); };
   }, [material, id]);
 
+  // "Put yourself on screen": the visitor's camera replaces the photo. Frames never leave the page.
+  const cam = useStore((st) => st.cam);
+  useEffect(() => {
+    if (id !== "portrait" || cam !== "on") return;
+    const u = material.uniforms, still = u.uTex.value;
+    const video = document.createElement("video");
+    video.muted = true; video.playsInline = true;
+    let stream: MediaStream | null = null, live: THREE.VideoTexture | null = null, dead = false;
+    (navigator.mediaDevices?.getUserMedia({ video: { facingMode: "user", width: 640, height: 480 }, audio: false }) ?? Promise.reject())
+      .then(async (ms) => {
+        stream = ms;
+        if (dead) return ms.getTracks().forEach((t) => t.stop());
+        video.srcObject = ms;
+        await video.play();
+        live = new THREE.VideoTexture(video);
+        live.colorSpace = THREE.NoColorSpace;
+        const va = video.videoWidth / video.videoHeight, sa = 4 / 5;
+        u.uCamFit.value.set(Math.min(1, sa / va), Math.min(1, va / sa));
+        u.uTex.value = live; u.uCam.value = 1;
+      })
+      .catch(() => useStore.getState().set({ cam: "blocked" }));
+    return () => { dead = true; stream?.getTracks().forEach((t) => t.stop()); u.uTex.value = still; u.uCam.value = 0; live?.dispose(); };
+  }, [cam, id, material]);
+
   useFrame((_, dt) => {
     const s = state.current, u = material.uniforms, inp = ctx.input;
+    const slot = group.current?.parent;
+    if (slot) u.uShear.value.set(slot.position.x / 1000, slot.position.y / 1000); // camera sits 1000 px back
     const k = 1 - Math.pow(0.0005, dt);
     const aspect = ctx.aspect;
     const half = aspect >= 1 ? [0.5 * aspect, 0.5] : [0.5, 0.5 / aspect];
     u.uHalf.value.set(half[0], half[1]);
-    u.uCell.value = ((half[0] * 2) / grid[0]) * ctx.pxPerUnit * 1.04 * (ctx.lofi ? 2 : 1);
+    u.uCell.value = ((half[0] * 2) / grid[0]) * ctx.pxPerUnit * 1.04 * fit * (ctx.lofi ? 2 : 1);
     u.uSkip.value = ctx.lofi ? 1 : 0;
     s.press += ((inp.inside ? 1 : 0) - s.press) * k;
     u.uPress.value = s.press;
@@ -152,7 +190,7 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
       s.tx += ((-inp.py * 0.3 + inp.dragY * 0.2) - s.tx) * k;
       s.ty += ((inp.px * 0.3 + inp.dragX * 0.2) - s.ty) * k;
       if (group.current) { group.current.rotation.x = s.tx; group.current.rotation.y = s.ty; }
-    }
+    } else if (group.current) group.current.rotation.y = -0.25; // the figure stands on the right, turned slightly toward the copy
     if (inp.clicks !== s.clicks && !s.scanning) {
       s.clicks = inp.clicks; s.scanning = true;
       const next = (s.mode + 1) % 4;
@@ -165,7 +203,7 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
   });
 
   return (
-    <group ref={group}>
+    <group ref={group} scale={fit} position={[0, (1 - fit) * 1.9, 0]}>
       <points geometry={geometry} material={material} frustumCulled={false} />
     </group>
   );

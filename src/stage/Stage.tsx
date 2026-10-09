@@ -9,12 +9,12 @@ import { useStore } from "@/lib/store";
 import Relief from "./artifacts/Relief";
 import Orrery from "./artifacts/Orrery";
 import Receiver from "./artifacts/Receiver";
-import Strata from "./artifacts/Strata";
+import Logo from "./artifacts/Logo";
 import Lines from "./artifacts/Lines";
 
 type Artifact = ComponentType<{ ctx: SlotCtx; id: SlotId }>;
 const ARTIFACTS: Record<SlotId, Artifact> = {
-  portrait: Relief, figure: Relief, orrery: Orrery, receiver: Receiver, strata: Strata, lines: Lines,
+  portrait: Relief, figure: Relief, orrery: Orrery, receiver: Receiver, logo0: Logo, logo1: Logo, logo2: Logo, lines: Lines,
 };
 
 function pickTier(): 1 | 2 | 3 {
@@ -107,6 +107,7 @@ function Clock({ root }: { root: React.RefObject<THREE.Group | null> }) {
     shared.uPixelRatio.value = gl.getPixelRatio();
   }, [camera, size, gl]);
   useEffect(() => {
+    let was = false;
     const tick = (t: number) => {
       if (document.hidden) return;
       shared.uTime.value = t;
@@ -115,7 +116,8 @@ function Clock({ root }: { root: React.RefObject<THREE.Group | null> }) {
         c.userData.place?.();
         any ||= c.visible;
       });
-      if (any) advance(t);
+      if (any || was) advance(t); // one extra frame after the last slot leaves, so the canvas is cleared
+      was = any;
     };
     gsap.ticker.add(tick);
     return () => gsap.ticker.remove(tick);

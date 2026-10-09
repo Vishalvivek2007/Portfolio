@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: BOOT_JS }} />
         <noscript><style>{"html[data-boot=run] body{clip-path:none!important}html[data-boot=run] [data-late]{opacity:1!important}"}</style></noscript>
       </head>
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

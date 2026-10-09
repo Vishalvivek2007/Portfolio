@@ -6,13 +6,13 @@ export const content = {
   tagline: "I build full-stack and machine-learning products that people actually use.",
   school: "Computer science, VIT Vellore",
   next: "Joining Microsoft as an intern",
-  email: TODO,
+  email: "vishal.vivek.10039@gmail.com",
+  github: "Vishalvivek2007",
   links: [
-    { label: "GitHub", handle: TODO, href: "#" },
-    { label: "LinkedIn", handle: TODO, href: "#" },
-    { label: "X", handle: TODO, href: "#" },
-    { label: "LeetCode", handle: TODO, href: "#" },
-    { label: "Résumé", handle: "pdf", href: "#" },
+    { label: "GitHub", handle: "Vishalvivek2007", href: "https://github.com/Vishalvivek2007" },
+    { label: "LinkedIn", handle: "vishalviveknambiar", href: "https://www.linkedin.com/in/vishalviveknambiar/" },
+    { label: "LeetCode", handle: "ToBi--", href: "https://leetcode.com/u/ToBi--/" },
+    { label: "Résumé", handle: "pdf", href: "https://drive.google.com/file/d/17PyRjv2DjwxpH2d-vI8Yp72YSLAe3Ach/view?usp=sharing" },
   ],
   projects: [
     {
@@ -33,7 +33,7 @@ export const content = {
   ],
   about: [
     "I'm Vishal, a third-year computer science student at VIT Vellore. I like building things people end up using: the kind of project a stranger opens twice.",
-    "Most of my work sits where full-stack web meets machine learning. Fast interfaces in front, models and data behind them. I've interned at Deep Terrain AI and " + TODO + ", and I'm joining Microsoft as an intern next.",
+    "Most of my work sits where full-stack web meets machine learning. Fast interfaces in front, models and data behind them. I've interned at Deep Terrain AI and Innova Solutions, and I'm joining Microsoft as an intern next.",
     "When I'm not shipping something, I'm usually working through data structures and algorithms. I enjoy the puzzle of it more than I probably should.",
   ],
   facts: [
@@ -48,9 +48,9 @@ export const content = {
     Foundations: ["DSA", "C++", "Git", "Linux"],
   } as Record<string, string[]>,
   experience: [
-    { company: "Microsoft", role: TODO, when: "Upcoming", upcoming: true, points: [] as string[] },
-    { company: "Deep Terrain AI", role: TODO, when: TODO, upcoming: false, points: [TODO] },
-    { company: TODO, role: TODO, when: TODO, upcoming: false, points: [TODO] },
+    { company: "Microsoft", logo: "/logos/microsoft.png", role: "Intern", when: "Upcoming", upcoming: true, points: [] as string[] },
+    { company: "Deep Terrain AI", logo: "/logos/deepterrain.png", role: "Intern", when: "2 months", upcoming: false, points: [] as string[] },
+    { company: "Innova Solutions", logo: "/logos/innova.png", role: "Intern", when: "2 months", upcoming: false, points: [] as string[] },
   ],
   education: "B.Tech Computer Science, VIT Vellore, expected 2028",
 };

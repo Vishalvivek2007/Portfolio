@@ -12,6 +12,7 @@ interface AppState {
   phosphor: Phosphor;
   unlocked: Phosphor[];
   hoverSkill: string | null;
+  cam: "off" | "on" | "blocked"; // visitor's camera standing in for the portrait
   set: (p: Partial<AppState>) => void;
 }
 
@@ -24,6 +25,7 @@ export const useStore = create<AppState>()(
       phosphor: "white",
       unlocked: ["white"],
       hoverSkill: null,
+      cam: "off",
       set: (p) => set(p),
     }),
     { name: "raster", partialize: (s) => ({ res: s.res, phosphor: s.phosphor, unlocked: s.unlocked }) },

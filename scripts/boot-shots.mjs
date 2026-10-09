@@ -6,7 +6,7 @@ const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
 const logs = [];
 p.on("console", (m) => { if (m.type() === "error") logs.push(m.text().slice(0, 200)); });
 p.on("pageerror", (e) => logs.push(e.message.slice(0, 200)));
-await p.goto("http://localhost:3100/", { waitUntil: "commit" });
+await p.goto("http://localhost:" + (process.env.PORT || 3100) + "/", { waitUntil: "commit" });
 for (const t of [300, 700, 1200, 1700, 2200, 3200]) {
   await p.waitForTimeout(t - (globalThis.last || 0)); globalThis.last = t;
   await p.screenshot({ path: `shots/boot-${t}.png` });
