@@ -27,7 +27,7 @@ URL params: `?boot=skip`, `?res=lofi|broadcast|clean`, `?tier=1|2|3`, `?phosphor
 | Lab (a seventh section, not in the plan, between Stack and Experience). Driving school: draw a road and 120 small neural networks (8 inputs, 8 neurons, 2 outputs) learn to drive it by selection and mutation, with the leader's sensors and live brain on show; works with mouse or finger. Digit reader: draw a digit and a 784-64-10 network reads it live, every neuron drawn, each neuron's weights shown on hover; trained by `npm run train:digits` (plain JS, no ML library, 97.6% on the MNIST test set) | Done |
 | Experience: three cards, each with a spinning extruded company logo (mono, colour on hover), upcoming entry dashed | Done |
 | Contact: flowing halftone backdrop with pointer ripples, copy email, social rows, power switch (closes the screen, replays boot) | Done |
-| Resolution dial (1-bit / Broadcast / Clean), keys 1-7 / [ ] / g / ?, on-screen display, static burst on channel change | Done |
+| Resolution dial (1-bit / Broadcast / Clean), keys 1-7 / [ ] / g / ?, on-screen display (the static burst on channel change was removed on request) | Done |
 | Game dock `snake.deque` (self-playing BFS attract mode, real deque ops readout, unlocks green at 10 and amber at 25) | Done |
 | Vishal's HalftoneTrail as the cursor (pasted component, verbatim) | Done, mounts after first mouse move, fine pointers only |
 | Clean mode posters, OG image, favicon, metadata | Done |

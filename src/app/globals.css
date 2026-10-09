@@ -89,7 +89,6 @@ a, button { cursor: pointer; }
   0% { transform: translate(0,0); } 17% { transform: translate(-3%,2%); } 33% { transform: translate(2%,-4%); }
   50% { transform: translate(-4%,-1%); } 67% { transform: translate(3%,3%); } 100% { transform: translate(0,0); }
 }
-.static-burst { position: fixed; inset: 0; z-index: 61; pointer-events: none; opacity: 0.35; background: url(/noise.png) 0 0 / 128px; }
 @media (max-width: 640px) { .screen-overlay .frame { display: none; } }
 @media (prefers-reduced-motion: reduce) { .screen-overlay .grain { animation: none; } }
 html.res-clean .grain { animation: none; }

@@ -40,11 +40,9 @@ export default function Shell() {
   const [fine, setFine] = useState(false);
   const [moved, setMoved] = useState(false);
   const [osd, setOsd] = useState<number | null>(null);
-  const [burst, setBurst] = useState(false);
   const [menu, setMenu] = useState(false);
   const [help, setHelp] = useState(false);
   const [cells, setCells] = useState(0); // lit scroll-progress cells
-  const lastBurst = useRef(0);
   const reduced = useRef(false);
 
   // classes on <html>
@@ -99,12 +97,6 @@ export default function Shell() {
             set({ channel: n });
             if (!reduced.current) {
               setOsd(n);
-              const now = performance.now();
-              if (now - lastBurst.current > 600) {
-                lastBurst.current = now;
-                setBurst(true);
-                setTimeout(() => setBurst(false), 180);
-              }
             }
           }
         }),
@@ -216,7 +208,6 @@ export default function Shell() {
           <div className="scan" /><div className="vig" /><div className="grain" /><div className="frame" />
         </div>
       )}
-      {burst && !clean && <div className="static-burst" aria-hidden />}
     </>
   );
 }

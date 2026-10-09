@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "prep:portrait": "node scripts/prep-portrait.mjs",
-    "train:digits": "node scripts/train-digits.mjs",
+    "train:doodles": "node --experimental-strip-types scripts/fetch-doodles.mjs && python scripts/train-doodles.py",
     "check:content": "node scripts/check-content.mjs",
     "test": "node --experimental-strip-types --test \"src/**/*.test.ts\""
   },
@@ -17,6 +17,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
+    "ai": "^7.0.136",
     "geist": "^1.7.2",
     "gsap": "^3.15.0",
     "lenis": "^1.3.26",
@@ -24,6 +25,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "three": "^0.186.1",
+    "zod": "^4.6.5",
     "zustand": "^5.0.15"
   },
   "devDependencies": {

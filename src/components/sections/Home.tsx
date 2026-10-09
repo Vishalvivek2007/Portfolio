@@ -27,7 +27,7 @@ export default function Home() {
       <div className="col-span-12 lg:col-span-6 order-1 lg:order-2 flex justify-center lg:justify-end max-lg:pb-14">
         <div className="relative w-full max-w-[min(72vw,calc((100dvh-8.5rem)*0.8))] aspect-[4/5]">
           <Slot id="portrait" label="Halftone portrait of Vishal, drawn live" className="absolute inset-0" />
-          <p className="machine absolute right-full mr-4 top-0 hidden lg:block whitespace-nowrap text-right">mode <span id="readout-portrait">halftone</span><br />drag to tilt,<br />click to rescan</p>
+          <p className="machine absolute right-full mr-4 top-0 hidden lg:block whitespace-nowrap text-right">mode <span id="readout-portrait">ascii</span><br />drag to tilt,<br />click to rescan</p>
           <CamButton />
         </div>
       </div>

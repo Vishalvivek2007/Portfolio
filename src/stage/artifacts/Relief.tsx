@@ -99,7 +99,7 @@ void main() {
 
 const MODES = ["halftone", "ascii", "line", "block"];
 const SRC: Record<string, { url: string; grid: [number, number]; mode: number }> = {
-  portrait: { url: "/relief/portrait.png", grid: [200, 250], mode: 0 },
+  portrait: { url: "/relief/portrait.png", grid: [200, 250], mode: 1 },
   figure: { url: "/relief/figure.png", grid: [96, 250], mode: 2 },
 };
 
@@ -172,6 +172,18 @@ export default function Relief({ ctx, id }: { ctx: SlotCtx; id: SlotId }) {
       .catch(() => useStore.getState().set({ cam: "blocked" }));
     return () => { dead = true; stream?.getTracks().forEach((t) => t.stop()); u.uTex.value = still; u.uCam.value = 0; live?.dispose(); };
   }, [cam, id, material]);
+
+  // "Put it on the big screen": a drawing from the Lab replaces the photo, and the picture re-tunes from coarse blocks.
+  const doodle = useStore((st) => st.doodle);
+  useEffect(() => {
+    if (id !== "portrait" || !doodle) return;
+    const u = material.uniforms, still = u.uTex.value, tex = new THREE.CanvasTexture(doodle);
+    tex.minFilter = THREE.LinearFilter; tex.magFilter = THREE.LinearFilter; tex.colorSpace = THREE.NoColorSpace; tex.generateMipmaps = false;
+    u.uTex.value = tex;
+    const tl = gsap.timeline();
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) [16, 8, 4, 2, 1].forEach((b, i) => tl.set(u.uBlock, { value: b }, i * 0.1));
+    return () => { tl.kill(); u.uBlock.value = 1; u.uTex.value = still; tex.dispose(); };
+  }, [doodle, id, material]);
 
   useFrame((_, dt) => {
     const s = state.current, u = material.uniforms, inp = ctx.input;
